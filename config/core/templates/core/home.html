@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SocialHub - Connect with Friends</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #f0f2f5;
+            color: #1a1a1a;
+        }
+
+        /* Navbar */
+        .navbar {
+            background: white;
+            padding: 12px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 26px;
+            font-weight: bold;
+            background: linear-gradient(135deg, #1877f2, #e4405f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .logo i {
+            background: linear-gradient(135deg, #1877f2, #e4405f);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #606770;
+            font-weight: 500;
+            transition: 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a:hover {
+            color: #1877f2;
+        }
+
+        .logout-btn {
+            background: #e4e6eb;
+            padding: 8px 16px;
+            border-radius: 20px;
+            color: #333 !important;
+        }
+
+        .logout-btn:hover {
+            background: #d8dadf;
+        }
+
+        /* Main Container - Center Only */
+        .container {
+            max-width: 700px;
+            margin: 20px auto;
+            padding: 0 20px;
+        }
+
+        /* Create Post Box */
+        .create-post {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .post-input-area {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1877f2, #e4405f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .post-avatar i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .post-input-area textarea {
+            flex: 1;
+            border: none;
+            background: #f0f2f5;
+            padding: 12px 16px;
+            border-radius: 24px;
+            resize: none;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        .post-input-area textarea:focus {
+            outline: none;
+            background: #e4e6eb;
+        }
+
+        .post-actions {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 12px;
+        }
+
+        .post-btn {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 8px 24px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        .post-btn:hover {
+            background: #166fe5;
+        }
+
+        /* Post Card */
+        .post-card {
+            background: white;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .post-header {
+            padding: 16px 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .post-avatar-small {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1877f2, #e4405f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .post-avatar-small i {
+            color: white;
+            font-size: 20px;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-user-name {
+            font-weight: 600;
+            color: #1a1a1a;
+            text-decoration: none;
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #65676b;
+        }
+
+        .post-content {
+            padding: 0 20px 16px;
+            font-size: 15px;
+            line-height: 1.5;
+        }
+
+        .post-stats {
+            padding: 10px 20px;
+            border-top: 1px solid #e4e6eb;
+            border-bottom: 1px solid #e4e6eb;
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+            color: #65676b;
+        }
+
+        .post-buttons {
+            padding: 8px 20px;
+            display: flex;
+            gap: 20px;
+        }
+
+        .post-btn-action {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            color: #65676b;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: 0.3s;
+        }
+
+        .post-btn-action:hover {
+            background: #f0f2f5;
+        }
+
+        .liked {
+            color: #e74c3c;
+        }
+
+        /* Comments Section */
+        .comments-section {
+            padding: 16px 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e4e6eb;
+        }
+
+        .comment {
+            margin-bottom: 12px;
+            display: flex;
+            gap: 10px;
+        }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #1877f2, #e4405f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .comment-avatar i {
+            color: white;
+            font-size: 14px;
+        }
+
+        .comment-bubble {
+            flex: 1;
+            background: #e4e6eb;
+            padding: 8px 12px;
+            border-radius: 18px;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a1a1a;
+        }
+
+        .comment-text {
+            font-size: 13px;
+            margin-top: 2px;
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .comment-form input {
+            flex: 1;
+            border: none;
+            background: white;
+            padding: 10px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: 1px solid #e4e6eb;
+        }
+
+        .comment-form button {
+            background: #1877f2;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+        }
+
+        /* Left Sidebar - Profile Card */
+        .left-sidebar {
+            position: fixed;
+            left: 20px;
+            top: 80px;
+            width: 280px;
+        }
+
+        .profile-card {
+            background: white;
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        .profile-avatar {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #1877f2, #e4405f);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 15px;
+        }
+
+        .profile-avatar i {
+            font-size: 40px;
+            color: white;
+        }
+
+        .profile-card h3 {
+            margin-bottom: 5px;
+            color: #1a1a1a;
+        }
+
+        .profile-card p {
+            color: #65676b;
+            font-size: 13px;
+        }
+
+        @media (max-width: 1024px) {
+            .left-sidebar {
+                display: none;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .nav-links {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            
+            .container {
+                padding: 0 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fab fa-facebook-messenger"></i>
+            <span>SocialHub</span>
+        </div>
+        <div class="nav-links">
+            {% if user.is_authenticated %}
+                <a href="{% url 'home' %}"><i class="fas fa-home"></i> Home</a>
+                <a href="{% url 'profile' user.username %}"><i class="fas fa-user-circle"></i> Profile</a>
+                <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            {% else %}
+                <a href="{% url 'login' %}"><i class="fas fa-sign-in-alt"></i> Login</a>
+                <a href="{% url 'signup' %}"><i class="fas fa-user-plus"></i> Signup</a>
+            {% endif %}
+        </div>
+    </nav>
+
+    {% if user.is_authenticated %}
+    <div class="left-sidebar">
+        <div class="profile-card">
+            <div class="profile-avatar">
+                <i class="fas fa-user"></i>
+            </div>
+            <h3>{{ user.username }}</h3>
+            <p>Welcome back! 👋</p>
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="container">
+        {% if user.is_authenticated %}
+        <div class="create-post">
+            <div class="post-input-area">
+                <div class="post-avatar">
+                    <i class="fas fa-user"></i>
+                </div>
+                <form method="POST" action="{% url 'create_post' %}" style="flex: 1;">
+                    {% csrf_token %}
+                    <textarea name="content" rows="2" placeholder="What's on your mind, {{ user.username }}?"></textarea>
+                    <div class="post-actions">
+                        <button type="submit" class="post-btn"><i class="fas fa-paper-plane"></i> Post</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+
+        {% for post in posts %}
+        <div class="post-card" id="post-{{ post.id }}">
+            <div class="post-header">
+                <div class="post-avatar-small">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="post-user-info">
+                    <a href="{% url 'profile' post.user.username %}" class="post-user-name">{{ post.user.username }}</a>
+                    <div class="post-time">{{ post.created_at|timesince }} ago</div>
+                </div>
+            </div>
+            
+            <div class="post-content">
+                {{ post.content }}
+            </div>
+            
+            <div class="post-stats">
+                <span id="likes-count-{{ post.id }}">
+                    <i class="fas fa-heart"></i> <span class="like-number-{{ post.id }}">{{ post.total_likes }}</span> likes
+                </span>
+                <span><i class="fas fa-comment"></i> {{ post.comments.count }} comments</span>
+            </div>
+            
+            <div class="post-buttons">
+                {% if user.is_authenticated %}
+                <button class="post-btn-action like-btn" data-post-id="{{ post.id }}" data-liked="{% if user in post.likes.all %}true{% else %}false{% endif %}">
+                    {% if user in post.likes.all %}
+                        <i class="fas fa-heart liked"></i> <span>Liked</span>
+                    {% else %}
+                        <i class="far fa-heart"></i> <span>Like</span>
+                    {% endif %}
+                </button>
+                {% endif %}
+                <button class="post-btn-action comment-toggle" data-post-id="{{ post.id }}">
+                    <i class="far fa-comment"></i> Comment
+                </button>
+            </div>
+            
+            <div class="comments-section" id="comments-{{ post.id }}" style="display: none;">
+                {% for comment in post.comments.all %}
+                <div class="comment">
+                    <div class="comment-avatar">
+                        <i class="fas fa-user"></i>
+                    </div>
+                    <div class="comment-bubble">
+                        <span class="comment-user">{{ comment.user.username }}</span>
+                        <div class="comment-text">{{ comment.content }}</div>
+                    </div>
+                </div>
+                {% empty %}
+                <p style="color: #65676b; font-size: 13px; text-align: center;">No comments yet. Be the first!</p>
+                {% endfor %}
+                
+                {% if user.is_authenticated %}
+                <form method="POST" action="{% url 'add_comment' post.id %}" class="comment-form">
+                    {% csrf_token %}
+                    <input type="text" name="content" placeholder="Write a comment..." required>
+                    <button type="submit">Post</button>
+                </form>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div class="create-post" style="text-align: center;">
+            <p>No posts yet. {% if user.is_authenticated %}Be the first to post!{% endif %}</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <script>
+        // Function to get CSRF token
+        function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+        // Function to handle like
+        async function handleLike(postId, button) {
+            try {
+                const response = await fetch(`/post/like/${postId}/`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken'),
+                        'Content-Type': 'application/json'
+                    },
+                });
+                
+                const data = await response.json();
+                
+                // Update like count
+                const likeNumberSpan = document.querySelector(`.like-number-${postId}`);
+                if (likeNumberSpan) {
+                    likeNumberSpan.textContent = data.total_likes;
+                }
+                
+                // Update button appearance
+                const icon = button.querySelector('i');
+                const span = button.querySelector('span');
+                
+                if (data.liked) {
+                    icon.className = 'fas fa-heart liked';
+                    span.textContent = 'Liked';
+                } else {
+                    icon.className = 'far fa-heart';
+                    span.textContent = 'Like';
+                }
+                
+                // Update data-liked attribute
+                button.setAttribute('data-liked', data.liked);
+                
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+        // Add event listeners to all like buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            // Like buttons
+            const likeButtons = document.querySelectorAll('.like-btn');
+            likeButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const postId = this.getAttribute('data-post-id');
+                    handleLike(postId, this);
+                });
+            });
+            
+            // Comment toggle buttons
+            const commentToggles = document.querySelectorAll('.comment-toggle');
+            commentToggles.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const postId = this.getAttribute('data-post-id');
+                    const commentsDiv = document.getElementById(`comments-${postId}`);
+                    if (commentsDiv.style.display === 'none') {
+                        commentsDiv.style.display = 'block';
+                    } else {
+                        commentsDiv.style.display = 'none';
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
